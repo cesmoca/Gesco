@@ -20,12 +20,12 @@ VideoSource::VideoSource(const std::string& name, const int& nDevice) {
 	_name = name;
 	_lastFrame = new cv::Mat();
 
-	_cam->set(CV_CAP_PROP_FRAME_WIDTH, _width);
-	_cam->set(CV_CAP_PROP_FRAME_HEIGHT, _height);
+	_cam->set(cv::CAP_PROP_FRAME_WIDTH, _width);
+	_cam->set(cv::CAP_PROP_FRAME_HEIGHT, _height);
 
-	_width = _cam->get(CV_CAP_PROP_FRAME_WIDTH);
-	_height = _cam->get(CV_CAP_PROP_FRAME_HEIGHT);
-	//cout<<"Theoretical fps: "<<_cam->get(CV_CAP_PROP_FPS)<<endl;
+	_width = _cam->get(cv::CAP_PROP_FRAME_WIDTH);
+	_height = _cam->get(cv::CAP_PROP_FRAME_HEIGHT);
+	//cout<<"Theoretical fps: "<<_cam->get(cv::CAP_PROP_FPS)<<endl;
 	//_fps = -1;
 
 	// Getting a first frame

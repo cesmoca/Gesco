@@ -7,7 +7,7 @@ OBJSDIR = ./obj/
 SRCDIR = ./src/
 CXX = g++
 CXXFLAGS = -Wall -c -O2
-OBJSLIB = $(wildcard GestureRecognizer/obj/*.o)
+OBJSLIB = $(wildcard Gesco/obj/*.o)
 
 # Compilation mode
 ifeq ($(mode), release) # Release mode
@@ -17,10 +17,10 @@ else # Debug mode
 endif
 
 # Libraries
-LDFLAGS = -lSDL  `pkg-config --libs opencv`
+LDFLAGS = `pkg-config --libs sdl`  `pkg-config --libs opencv4`
 
 # Includes
-INCFLAGS = -I$(INCDIR) `pkg-config --cflags sdl` -IGestureRecognizer/include
+INCFLAGS = `pkg-config --cflags sdl` `pkg-config --cflags opencv4` -IGesco/include
 
 # Objects
 OBJSCRUDE = EndController.o InputEventController.o Logger.o VideoFactory.o\
@@ -31,12 +31,11 @@ OBJS= $(addprefix $(OBJSDIR),$(OBJSCRUDE))
 # Rules
 all: credentials dirs libs $(OUTPUTDIR)/test
 
-# Make the lib GestureRecognizer
-lib:
-	cd GestureRecognizer; $(MAKE) lib
+# Make the lib Gesco
+	cd Gesco; $(MAKE) lib
 
 $(OUTPUTDIR)/test: $(OBJS)
-	$(CXX) $(OBJS) -Wall $(LDFLAGS) $(INCFLAGS) $(OBJSLIB) -o $(OUTPUTDIR)/test
+	$(CXX) $(OBJS) $(OBJSLIB) -Wall $(INCFLAGS) -o $(OUTPUTDIR)/test $(LDFLAGS)
 
 
 $(OBJSDIR)main.o: $(SRCDIR)main.cpp
@@ -47,17 +46,17 @@ $(OBJSDIR)%.o: $(SRCDIR)%.cpp $(SRCDIR)%.h
 	$(CXX) -o $@ $< $(CXXFLAGS) $(INCFLAGS) $(LDFLAGS)
 
 install:
-	cd GestureRecognizer; $(MAKE) install
+	cd Gesco; $(MAKE) install
 
 clean:
 	rm -Rf $(OBJSDIR) $(OUTPUTDIR) *~
 	rm -Rf log
-	cd GestureRecognizer; $(MAKE) clean
+	cd Gesco; $(MAKE) clean
 
 
 # Build gesture recognizer
 libs:
-	cd GestureRecognizer; $(MAKE) $(mode)
+	cd Gesco; $(MAKE) $(mode)
 
 credentials:
 	@echo

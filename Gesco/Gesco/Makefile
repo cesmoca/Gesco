@@ -18,10 +18,10 @@ else # Debug mode
 endif
 
 # Libraries
-LDFLAGS = -lSDL  `pkg-config --libs opencv` 
+LDFLAGS = `pkg-config --libs sdl`  `pkg-config --libs opencv4` 
 
 # Includes
-INCFLAGS = -I$(INCDIR) `pkg-config --cflags sdl`
+INCFLAGS = -I$(INCDIR) `pkg-config --cflags sdl`  `pkg-config --cflags opencv4`
 
 # Objects
 OBJSCRUDE = HandDetector.o GestureRecognizer.o Recognizer.o Hand.o\
@@ -33,13 +33,13 @@ OBJS= $(addprefix $(OBJSDIR),$(OBJSCRUDE))
 all:  dirs $(OBJS) tool
 
 lib: dirs  $(OBJS)
-	$(CXX) $(OBJS) -Wall $(LDFLAGS) $(INCFLAGS) -shared -o $(OUTPUTDIR)/$(LIBNAME)
+	$(CXX) $(OBJS) -Wall $(INCFLAGS) -shared -o $(LIBDIR)/$(LIBNAME) $(LDFLAGS)
 
 tool: 
 	cd tool; $(MAKE)	
 
-install: $(OUTPUTDIR)/$(LIBNAME)
-	cp $(OUTPUTDIR)/$(LIBNAME) /usr/lib/
+install: $(LIBDIR)/$(LIBNAME)
+	cp $(LIBDIR)/$(LIBNAME) /usr/lib/
 	ldconfig
 
 #Controller objs
@@ -56,7 +56,7 @@ $(OBJSDIR)%.o: $(SRCDIR)Kernel/%.cpp $(INCDIR)Kernel/%.h
 	$(CXX) -o $@ $< $(CXXFLAGS) $(INCFLAGS) $(LDFLAGS)
 
 clean:
-	rm -Rf $(OBJSDIR) $(OUTPUTDIR) *~
+	rm -Rf $(OBJSDIR) $(LIBDIR) *~
 
 dirs:
 	mkdir -p $(LIBDIR)

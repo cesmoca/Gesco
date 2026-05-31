@@ -18,7 +18,7 @@ DebugController::DebugController(Hand* hand, int width, int height) :
 
 	// Gesture recognized
 	namedWindow("GestureRecognized", WINDOW_AUTOSIZE);
-	cvMoveWindow("GestureRecognized", 0, _height + 60);
+	moveWindow("GestureRecognized", 0, _height + 60);
 
 	int x = _width + 15;
 	int y = 0;
@@ -27,7 +27,7 @@ DebugController::DebugController(Hand* hand, int width, int height) :
 		stringstream ss;
 		ss << "Test" << i << "Window";
 		namedWindow(ss.str(), WINDOW_AUTOSIZE);
-		cvMoveWindow(ss.str().c_str(), x, y);
+		moveWindow(ss.str(), x, y);
 		x += _width + 15;
 		if (x > (1366 - _width)) {
 			x = _width + 15;

@@ -129,8 +129,8 @@ void Hist_and_Backproj( )
 
   // Get contours and save them
   vector<vector<Point> > contours;
-  findContours(mask, contours, CV_RETR_EXTERNAL,
-	       CV_CHAIN_APPROX_SIMPLE);
+  findContours(mask, contours, RETR_EXTERNAL,
+	       CHAIN_APPROX_SIMPLE);
 
   Mat contoursImg = Mat::zeros(mask.size(), CV_8UC3);
   drawContours(contoursImg, contours, -1, Scalar(255, 255, 255), 2);

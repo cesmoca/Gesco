@@ -1,0 +1,51 @@
+# Visual Studio / IDE state
+.vs/
+.vscode/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Project build outputs
+Gesco/bin/
+Gesco/obj/
+Gesco/lib/
+Gesco/Gesco/bin/
+Gesco/Gesco/obj/
+Gesco/Gesco/lib/
+Gesco/Gesco/tool/calc
+Gesco/Gesco/tool/calc.exe
+
+# Compiled objects and libraries
+*.o
+*.obj
+*.a
+*.lib
+*.so
+*.dll
+*.dylib
+*.exe
+*.pdb
+*.ilk
+
+# Generated runtime/debug files
+Gesco/log/
+Gesco/Gesco/log/
+*.log
+core
+core.*
+
+# Generated gesture/tool data
+Gesco/Gesco/tool/*.yml
+
+# Make/editor temporary files
+*~
+*.tmp
+*.bak
+*.swp
+*.swo
+
+# OS metadata
+.DS_Store
+Thumbs.db
+desktop.ini

@@ -24,7 +24,7 @@ void World::initWorld(int width, int height) {
 
 	// Original frame
 	namedWindow("OriginalFrame", WINDOW_AUTOSIZE );
-	cvMoveWindow("OriginalFrame", 0, 0);
+	cv::moveWindow("OriginalFrame", 0, 0);
 
 
 	_ticksLastEvent = SDL_GetTicks();

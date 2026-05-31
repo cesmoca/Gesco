@@ -217,14 +217,14 @@ bool HandDetector::storeFrames(cv::Mat& frame) {
 
 	if (_frame.rows != 0) {
 		// Saving to previous frame. In GRAY to save time
-		cvtColor(_frame, _prevframe, CV_BGR2GRAY);
+		cvtColor(_frame, _prevframe, COLOR_BGR2GRAY);
 
 		//Mat preEqual;
 		resize(frame, _frame, Size(_width, _height));
 		//equalizeHist(preEqual, _originalFrame);
 
 		// Convert it to gray
-		cvtColor(_frame, _frameGray, CV_BGR2GRAY);
+		cvtColor(_frame, _frameGray, COLOR_BGR2GRAY);
 
 		// Difference frame
 		absdiff(_frameGray, _prevframe, _movFrame);
@@ -241,7 +241,7 @@ bool HandDetector::storeFrames(cv::Mat& frame) {
 		GaussianBlur(_frameGray, _frameGrayBlur, GAUS_KERNEL, GAUS_SIGMA);
 
 		// Convert to HSV
-		cvtColor(_frameBlur, _frameHSV, CV_BGR2HSV);
+		cvtColor(_frameBlur, _frameHSV, COLOR_BGR2HSV);
 		split(_frameHSV, _vectorFrameHSV);
 
 		return true;

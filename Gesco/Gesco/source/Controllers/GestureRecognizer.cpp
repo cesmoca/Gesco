@@ -25,8 +25,8 @@ void GestureRecognizer::detect() {
 	vector<Point> recognizedGesture;
 
 	for (unsigned int frameId = 0; frameId < handsMasks.size(); frameId++) {
-		findContours(handsMasks.at(frameId), contours, CV_RETR_EXTERNAL,
-				CV_CHAIN_APPROX_SIMPLE);
+		findContours(handsMasks.at(frameId), contours, RETR_EXTERNAL,
+				CHAIN_APPROX_SIMPLE);
 
 		processContours(contours, contour);
 
@@ -35,7 +35,7 @@ void GestureRecognizer::detect() {
 			double difference;
 			try {
 				difference = matchShapes(contour, _gesturesLib.at(gestId),
-						CV_CONTOURS_MATCH_I1, 0);
+						CONTOURS_MATCH_I1, 0);
 			} catch (cv::Exception& e) {
 				continue;
 			}
