@@ -7,6 +7,8 @@
 
 #include "World.h"
 
+#include <sstream>
+
 using namespace cv;
 using namespace std;
 
@@ -32,6 +34,19 @@ bool World::initWorld(int width, int height) {
 		return false;
 	}
 
+	int windowWidth = 0;
+	int windowHeight = 0;
+	int pixelWidth = 0;
+	int pixelHeight = 0;
+	SDL_GetWindowSize(_window, &windowWidth, &windowHeight);
+	SDL_GetWindowSizeInPixels(_window, &pixelWidth, &pixelHeight);
+
+	std::stringstream windowInfo;
+	windowInfo << "SDL window size: " << windowWidth << "x" << windowHeight
+			<< " logical units; " << pixelWidth << "x" << pixelHeight
+			<< " physical pixels.";
+	Logger::getInstance()->out(windowInfo.str());
+
 	_renderer = SDL_CreateRenderer(_window, NULL);
 	if (_renderer == NULL) {
 		Logger::getInstance()->error(std::string("SDL renderer creation failed: ") + SDL_GetError());
@@ -53,6 +68,9 @@ bool World::initWorld(int width, int height) {
 		return false;
 	}
 
+	_originalFrame.create(_height, _width, CV_8UC3);
+	_rgbFrame.create(_height, _width, CV_8UC3);
+
 	_ticksLastEvent = SDL_GetTicks();
 
 	Logger::getInstance()->out("World succesfully loaded!");
@@ -61,22 +79,20 @@ bool World::initWorld(int width, int height) {
 
 void World::drawWorld() {
 	//Draw the camera frame
-	Mat originalFrame;
-	Mat rgbFrame;
 	cv::Mat* frame = VideoFactory::getInstance()->getMainCamera().getLastFrame();
 
 	if (frame != NULL && !frame->empty()) {
-		resize(*frame, originalFrame, Size(_width, _height));
+		resize(*frame, _originalFrame, Size(_width, _height));
 
-		if (originalFrame.channels() == 3) {
-			cvtColor(originalFrame, rgbFrame, COLOR_BGR2RGB);
-		} else if (originalFrame.channels() == 4) {
-			cvtColor(originalFrame, rgbFrame, COLOR_BGRA2RGB);
+		if (_originalFrame.channels() == 3) {
+			cvtColor(_originalFrame, _rgbFrame, COLOR_BGR2RGB);
+		} else if (_originalFrame.channels() == 4) {
+			cvtColor(_originalFrame, _rgbFrame, COLOR_BGRA2RGB);
 		} else {
-			cvtColor(originalFrame, rgbFrame, COLOR_GRAY2RGB);
+			cvtColor(_originalFrame, _rgbFrame, COLOR_GRAY2RGB);
 		}
 
-		SDL_UpdateTexture(_frameTexture, NULL, rgbFrame.data, (int) rgbFrame.step);
+		SDL_UpdateTexture(_frameTexture, NULL, _rgbFrame.data, (int) _rgbFrame.step);
 		SDL_RenderClear(_renderer);
 		SDL_RenderTexture(_renderer, _frameTexture, NULL, NULL);
 		SDL_RenderPresent(_renderer);

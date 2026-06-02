@@ -25,6 +25,8 @@ class World: public Singleton<World> {
 	SDL_Window* _window;
 	SDL_Renderer* _renderer;
 	SDL_Texture* _frameTexture;
+	cv::Mat _originalFrame;
+	cv::Mat _rgbFrame;
 
 
 public:

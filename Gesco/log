@@ -1,3 +1,8 @@
 --Gesture Recognizer's log--
+>Opening camera 'cam' on device 0. Requested mode: 640x480
+>Camera backend: DSHOW. Width set: yes, height set: yes. Selected mode: 640x480 @ 0 FPS
+[WARNING]OpenCV VideoCapture does not expose a portable list of supported camera modes.
+>First captured frame: 640x480, channels: 3
 >Initializing world...
+>SDL window size: 640x480 logical units; 640x480 physical pixels.
 >World succesfully loaded!

@@ -28,16 +28,14 @@ int main(int argc, char* argv[]) {
 
 		VideoFactory::getInstance()->addVideoSource("cam", 0);
 
-		float scale = 0.5;
-
 		Recognizer* recognizer = new Recognizer(
 				VideoFactory::getInstance()->getMainCamera().getWidth(),
-				VideoFactory::getInstance()->getMainCamera().getHeight(), scale,
+				VideoFactory::getInstance()->getMainCamera().getHeight(),
 				false);
 
 		if (!World::getInstance()->initWorld(
-				VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
-				VideoFactory::getInstance()->getMainCamera().getHeight()*scale)) {
+				VideoFactory::getInstance()->getMainCamera().getWidth(),
+				VideoFactory::getInstance()->getMainCamera().getHeight())) {
 			return 1;
 		}
 

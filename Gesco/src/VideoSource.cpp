@@ -7,6 +7,8 @@
 
 #include "VideoSource.h"
 
+#include <sstream>
+
 using namespace std;
 
 VideoSource::VideoSource(const std::string& name, const int& nDevice) :
@@ -21,17 +23,38 @@ VideoSource::VideoSource(const std::string& name, const int& nDevice) :
 
 	_lastFrame = new cv::Mat();
 
-	_cam->set(cv::CAP_PROP_FRAME_WIDTH, _width);
-	_cam->set(cv::CAP_PROP_FRAME_HEIGHT, _height);
+	std::stringstream requestedMode;
+	requestedMode << "Opening camera '" << _name << "' on device " << nDevice
+			<< ". Requested mode: " << _width << "x" << _height;
+	Logger::getInstance()->out(requestedMode.str());
+
+	bool widthSet = _cam->set(cv::CAP_PROP_FRAME_WIDTH, _width);
+	bool heightSet = _cam->set(cv::CAP_PROP_FRAME_HEIGHT, _height);
 
 	_width = _cam->get(cv::CAP_PROP_FRAME_WIDTH);
 	_height = _cam->get(cv::CAP_PROP_FRAME_HEIGHT);
-	//cout<<"Theoretical fps: "<<_cam->get(cv::CAP_PROP_FPS)<<endl;
-	//_fps = -1;
+	_fps = _cam->get(cv::CAP_PROP_FPS);
+
+	std::stringstream selectedMode;
+	selectedMode << "Camera backend: " << _cam->getBackendName()
+			<< ". Width set: " << (widthSet ? "yes" : "no")
+			<< ", height set: " << (heightSet ? "yes" : "no")
+			<< ". Selected mode: " << _width << "x" << _height
+			<< " @ " << _fps << " FPS";
+	Logger::getInstance()->out(selectedMode.str());
+
+	Logger::getInstance()->warning(
+			"OpenCV VideoCapture does not expose a portable list of supported camera modes.");
 
 	// Getting a first frame
 	cv::Mat frame;
 	*_cam >> frame;
+	if (!frame.empty()) {
+		std::stringstream firstFrame;
+		firstFrame << "First captured frame: " << frame.cols << "x"
+				<< frame.rows << ", channels: " << frame.channels();
+		Logger::getInstance()->out(firstFrame.str());
+	}
 
 }
 
