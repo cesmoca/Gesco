@@ -6,7 +6,7 @@
  *
  *      Test application
  */
-//#include "InputEventController.h"
+#include "InputEventController.h"
 #include "VideoFactory.h"
 //#include "VideoSource.h"
 #include "EndController.h"
@@ -42,11 +42,11 @@ int main(int argc, char* argv[]) {
 
 		// Main loop
 		while (EndController::getInstance()->isRunning()) {
-		//	// Grab a frame from the camera!
-		//	VideoFactory::getInstance()->getMainCamera().grabFrame();
+		// Grab a frame from the camera!
+		VideoFactory::getInstance()->getMainCamera().grabFrame();
 
-		//	// Poll the events
-		//	InputEventController::getInstance()->pollEvents();
+		// Poll the events
+		InputEventController::getInstance()->pollEvents();
 
 		//	// Detection Logic
 		//	cv::Mat* frame =
