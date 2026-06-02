@@ -9,7 +9,7 @@
 #define RECOGNIZER_H_
 
 #include <Controllers/HandDetector.h>
-//#include <Controllers/GestureRecognizer.h>
+#include <Controllers/GestureRecognizer.h>
 //#include <Controllers/DebugController.h>
 #include <Kernel/Hand.h>
 
@@ -21,7 +21,7 @@ class Recognizer{
 
 	//DebugController* _debugController;
 	HandDetector* _handDetector;
-	//GestureRecognizer* _gestureRecognizer;
+	GestureRecognizer* _gestureRecognizer;
 
 	int _frameWidth;
 	int _frameHeight;

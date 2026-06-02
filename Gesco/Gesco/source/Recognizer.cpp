@@ -15,7 +15,7 @@ Recognizer::Recognizer(int width, int height, float scale, bool debug) {
 
 	// Hand stores the info :)
 	_handDetector = new HandDetector(&_hand, _frameWidth*_scale, _frameHeight*_scale);
-	//_gestureRecognizer = new GestureRecognizer(&_hand);
+	_gestureRecognizer = new GestureRecognizer(&_hand);
 
 	//if (debug) {
 	//	_debugController = new DebugController(&_hand, _frameWidth*_scale, _frameHeight*_scale);
@@ -26,10 +26,10 @@ Recognizer::Recognizer(int width, int height, float scale, bool debug) {
 }
 
 void Recognizer::detect(cv::Mat& frame) {
-	//_handDetector->detect(frame);
-	//_gestureRecognizer->detect();
+	_handDetector->detect(frame);
+	_gestureRecognizer->detect();
 
-	//// Trigger the debug controller :)
+	// Trigger the debug controller :)
 	//_debugController->show();
 }
 
