@@ -10,7 +10,7 @@
 
 #include <opencv2/opencv.hpp>
 #include <opencv2/highgui/highgui.hpp>
-//#include <SDL.h>
+#include <SDL.h>
 
 #include "VideoFactory.h"
 #include "Logger.h"

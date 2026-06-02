@@ -19,7 +19,7 @@ void World::initWorld(int width, int height) {
 	_width = width;
 	_height = height;
 
-	//SDL_Init(SDL_INIT_EVERYTHING);
+	SDL_Init(SDL_INIT_EVERYTHING);
 	////SDL_SetVideoMode(width, height,24,0);
 
 	//// Original frame

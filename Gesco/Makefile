@@ -7,9 +7,9 @@ OBJSDIR = ./obj/
 SRCDIR = ./src/
 CXX = g++
 CXXFLAGS = -Wall -c -O2
-SDL_LIBS = $(filter-out -mwindows -lmingw32 -lSDLmain,$(shell pkg-config --libs sdl))
+SDL_LIBS = -lSDL
 OPENCV_LIBS = $(shell pkg-config --libs opencv4)
-SDL_CFLAGS = $(filter-out -Dmain=SDL_main,$(shell pkg-config --cflags sdl))
+SDL_CFLAGS = -I/ucrt64/include/SDL -D_SDL_main_h
 OPENCV_CFLAGS = $(shell pkg-config --cflags opencv4)
 CONSOLE_LDFLAGS = -mconsole
 
@@ -24,12 +24,12 @@ endif
 # Temporarily disabled while isolating startup/runtime behavior.
 # Re-enable these incrementally as main.cpp starts using SDL/OpenCV/Gesco again.
 # LDFLAGS = $(CONSOLE_LDFLAGS) $(SDL_LIBS) $(OPENCV_LIBS)
-LDFLAGS = $(CONSOLE_LDFLAGS) $(OPENCV_LIBS)
+LDFLAGS = $(CONSOLE_LDFLAGS) $(SDL_LIBS) $(OPENCV_LIBS)
 
 # Includes
 # Temporarily disabled while main.cpp is reduced to standard-library code.
 # INCFLAGS = $(SDL_CFLAGS) $(OPENCV_CFLAGS) -IGesco/include
-INCFLAGS = $(OPENCV_CFLAGS) -IGesco/include
+INCFLAGS = $(SDL_CFLAGS) $(OPENCV_CFLAGS) -IGesco/include
 
 # Objects
 # Full application objects, temporarily disabled while isolating startup.
