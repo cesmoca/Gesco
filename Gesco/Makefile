@@ -24,19 +24,21 @@ endif
 # Temporarily disabled while isolating startup/runtime behavior.
 # Re-enable these incrementally as main.cpp starts using SDL/OpenCV/Gesco again.
 # LDFLAGS = $(CONSOLE_LDFLAGS) $(SDL_LIBS) $(OPENCV_LIBS)
-LDFLAGS =
+LDFLAGS = $(CONSOLE_LDFLAGS) $(OPENCV_LIBS)
 
 # Includes
 # Temporarily disabled while main.cpp is reduced to standard-library code.
 # INCFLAGS = $(SDL_CFLAGS) $(OPENCV_CFLAGS) -IGesco/include
-INCFLAGS =
+INCFLAGS = $(OPENCV_CFLAGS)
 
 # Objects
 # Full application objects, temporarily disabled while isolating startup.
 # OBJSCRUDE = EndController.o InputEventController.o Logger.o VideoFactory.o\
 # 			VideoSource.o World.o main.o
 # OBJSLIB = $(wildcard Gesco/obj/*.o)
-OBJSCRUDE = main.o
+# Current incremental app objects.
+# Add objects here as main.cpp starts using their functionality again.
+OBJSCRUDE = VideoFactory.o VideoSource.o Logger.o main.o
 OBJSLIB =
 
 OBJS= $(addprefix $(OBJSDIR),$(OBJSCRUDE))

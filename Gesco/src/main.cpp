@@ -9,7 +9,7 @@
 #define SDL_MAIN_HANDLED
 
 //#include "InputEventController.h"
-//#include "VideoFactory.h"
+#include "VideoFactory.h"
 //#include "VideoSource.h"
 //#include "EndController.h"
 //#include "World.h"
@@ -27,7 +27,7 @@ int main(int argc, char* argv[]) {
 	try {
 		std::cout << "Starting Gesco..." << std::endl;
 
-		//VideoFactory::getInstance()->addVideoSource("cam", 0);
+		VideoFactory::getInstance()->addVideoSource("cam", 0);
 
 		//float scale = 0.5;
 
