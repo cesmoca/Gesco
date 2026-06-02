@@ -6,57 +6,76 @@
  *
  *      Test application
  */
-#include "InputEventController.h"
-#include "VideoFactory.h"
-#include "VideoSource.h"
-#include "EndController.h"
-#include "World.h"
-#include "Logger.h"
+#define SDL_MAIN_HANDLED
 
-#include <Recognizer.h>
+//#include "InputEventController.h"
+//#include "VideoFactory.h"
+//#include "VideoSource.h"
+//#include "EndController.h"
+//#include "World.h"
+//#include "Logger.h"
+
+//#include <Recognizer.h>
+#include <exception>
+#include <iostream>
 #include <string>
 
 using namespace std;
 
 int main(int argc, char* argv[]) {
 
-	VideoFactory::getInstance()->addVideoSource("cam", 0);
+	try {
+		std::cout << "Starting Gesco..." << std::endl;
 
-	float scale = 0.5;
+		//VideoFactory::getInstance()->addVideoSource("cam", 0);
 
-	Recognizer* recognizer = new Recognizer(
-			VideoFactory::getInstance()->getMainCamera().getWidth(),
-			VideoFactory::getInstance()->getMainCamera().getHeight(), scale,
-			true);
+		//float scale = 0.5;
 
-	World::getInstance()->initWorld(
-			VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
-			VideoFactory::getInstance()->getMainCamera().getHeight()*scale);
+		//Recognizer* recognizer = new Recognizer(
+		//		VideoFactory::getInstance()->getMainCamera().getWidth(),
+		//		VideoFactory::getInstance()->getMainCamera().getHeight(), scale,
+		//		true);
 
-	// Main loop
-	while (EndController::getInstance()->isRunning()) {
-		// Grab a frame from the camera!
-		VideoFactory::getInstance()->getMainCamera().grabFrame();
+		//World::getInstance()->initWorld(
+		//		VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
+		//		VideoFactory::getInstance()->getMainCamera().getHeight()*scale);
 
-		// Poll the events
-		InputEventController::getInstance()->pollEvents();
+		//// Main loop
+		//while (EndController::getInstance()->isRunning()) {
+		//	// Grab a frame from the camera!
+		//	VideoFactory::getInstance()->getMainCamera().grabFrame();
 
-		// Detection Logic
-		cv::Mat* frame =
-				VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
-		recognizer->detect(*frame);
+		//	// Poll the events
+		//	InputEventController::getInstance()->pollEvents();
 
-		// Print the results, if any
-		//std::string& result = GestureRecognizer::getInstance()->getRecognizedGesture();
-		//if(result != "") std::cout<<result<<endl;
+		//	// Detection Logic
+		//	cv::Mat* frame =
+		//			VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
+		//	recognizer->detect(*frame);
 
-		// Draw
-		World::getInstance()->drawWorld();
+		//	// Print the results, if any
+		//	//std::string& result = GestureRecognizer::getInstance()->getRecognizedGesture();
+		//	//if(result != "") std::cout<<result<<endl;
+
+		//	// Draw
+		//	World::getInstance()->drawWorld();
+		//}
+
+		////Freeing resources
+		//World::getInstance()->destroy();
+		//VideoFactory::getInstance()->destroy();
+
+		//return 0;
+	} catch (const std::exception& e) {
+		std::cerr << "Fatal error: " << e.what() << std::endl;
+		return 1;
+	} catch (const std::string& e) {
+		std::cerr << "Fatal error: " << e << std::endl;
+		return 1;
+	} catch (const char* e) {
+		std::cerr << "Fatal error: " << e << std::endl;
+		return 1;
 	}
-
-	//Freeing resources
-	World::getInstance()->destroy();
-	VideoFactory::getInstance()->destroy();
 
 	return 0;
 }

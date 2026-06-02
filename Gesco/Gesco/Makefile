@@ -9,6 +9,10 @@ INCDIR = ./include/
 SRCDIR = ./source/
 CXX = g++
 CXXFLAGS = -Wall -c -fPIC -O2
+SDL_LIBS = $(filter-out -mwindows -lmingw32 -lSDLmain,$(shell pkg-config --libs sdl))
+OPENCV_LIBS = $(shell pkg-config --libs opencv4)
+SDL_CFLAGS = $(filter-out -Dmain=SDL_main,$(shell pkg-config --cflags sdl))
+OPENCV_CFLAGS = $(shell pkg-config --cflags opencv4)
 
 # Compilation mode
 ifeq ($(mode), release) # Release mode
@@ -18,10 +22,10 @@ else # Debug mode
 endif
 
 # Libraries
-LDFLAGS = `pkg-config --libs sdl`  `pkg-config --libs opencv4` 
+LDFLAGS = $(SDL_LIBS) $(OPENCV_LIBS)
 
 # Includes
-INCFLAGS = -I$(INCDIR) `pkg-config --cflags sdl`  `pkg-config --cflags opencv4`
+INCFLAGS = -I$(INCDIR) $(SDL_CFLAGS) $(OPENCV_CFLAGS)
 
 # Objects
 OBJSCRUDE = HandDetector.o GestureRecognizer.o Recognizer.o Hand.o\

@@ -7,7 +7,11 @@ OBJSDIR = ./obj/
 SRCDIR = ./src/
 CXX = g++
 CXXFLAGS = -Wall -c -O2
-OBJSLIB = $(wildcard Gesco/obj/*.o)
+SDL_LIBS = $(filter-out -mwindows -lmingw32 -lSDLmain,$(shell pkg-config --libs sdl))
+OPENCV_LIBS = $(shell pkg-config --libs opencv4)
+SDL_CFLAGS = $(filter-out -Dmain=SDL_main,$(shell pkg-config --cflags sdl))
+OPENCV_CFLAGS = $(shell pkg-config --cflags opencv4)
+CONSOLE_LDFLAGS = -mconsole
 
 # Compilation mode
 ifeq ($(mode), release) # Release mode
@@ -17,33 +21,42 @@ else # Debug mode
 endif
 
 # Libraries
-LDFLAGS = `pkg-config --libs sdl`  `pkg-config --libs opencv4`
+# Temporarily disabled while isolating startup/runtime behavior.
+# Re-enable these incrementally as main.cpp starts using SDL/OpenCV/Gesco again.
+# LDFLAGS = $(CONSOLE_LDFLAGS) $(SDL_LIBS) $(OPENCV_LIBS)
+LDFLAGS =
 
 # Includes
-INCFLAGS = `pkg-config --cflags sdl` `pkg-config --cflags opencv4` -IGesco/include
+# Temporarily disabled while main.cpp is reduced to standard-library code.
+# INCFLAGS = $(SDL_CFLAGS) $(OPENCV_CFLAGS) -IGesco/include
+INCFLAGS =
 
 # Objects
-OBJSCRUDE = EndController.o InputEventController.o Logger.o VideoFactory.o\
-			VideoSource.o World.o main.o
+# Full application objects, temporarily disabled while isolating startup.
+# OBJSCRUDE = EndController.o InputEventController.o Logger.o VideoFactory.o\
+# 			VideoSource.o World.o main.o
+# OBJSLIB = $(wildcard Gesco/obj/*.o)
+OBJSCRUDE = main.o
+OBJSLIB =
 
 OBJS= $(addprefix $(OBJSDIR),$(OBJSCRUDE))
 
-# Rules
-all: credentials dirs libs $(OUTPUTDIR)/test
+all: credentials dirs $(OUTPUTDIR)/test
 
 # Make the lib Gesco
+lib:
 	cd Gesco; $(MAKE) lib
 
 $(OUTPUTDIR)/test: $(OBJS)
 	$(CXX) $(OBJS) $(OBJSLIB) -Wall $(INCFLAGS) -o $(OUTPUTDIR)/test $(LDFLAGS)
 
 
-$(OBJSDIR)main.o: $(SRCDIR)main.cpp
-	$(CXX) -o $@ $< $(CXXFLAGS) $(INCFLAGS) $(LDFLAGS)
+$(OBJSDIR)main.o: $(SRCDIR)main.cpp Makefile
+	$(CXX) -o $@ $< $(CXXFLAGS) $(INCFLAGS)
 
 
-$(OBJSDIR)%.o: $(SRCDIR)%.cpp $(SRCDIR)%.h
-	$(CXX) -o $@ $< $(CXXFLAGS) $(INCFLAGS) $(LDFLAGS)
+$(OBJSDIR)%.o: $(SRCDIR)%.cpp $(SRCDIR)%.h Makefile
+	$(CXX) -o $@ $< $(CXXFLAGS) $(INCFLAGS)
 
 install:
 	cd Gesco; $(MAKE) install

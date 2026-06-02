@@ -9,7 +9,9 @@
 
 using namespace std;
 
-VideoSource::VideoSource(const std::string& name, const int& nDevice) {
+VideoSource::VideoSource(const std::string& name, const int& nDevice) :
+		_lastFrame(NULL), _name(name), _cam(NULL), _width(640), _height(480),
+		_fps(0) {
 	cv::VideoCapture* c = new cv::VideoCapture(nDevice);
 	_cam = c;
 
@@ -17,7 +19,6 @@ VideoSource::VideoSource(const std::string& name, const int& nDevice) {
 		throw "Camera not found exception: " + name;
 	}
 
-	_name = name;
 	_lastFrame = new cv::Mat();
 
 	_cam->set(cv::CAP_PROP_FRAME_WIDTH, _width);
