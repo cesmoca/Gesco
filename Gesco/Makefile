@@ -38,7 +38,7 @@ INCFLAGS = $(OPENCV_CFLAGS) -IGesco/include
 # OBJSLIB = $(wildcard Gesco/obj/*.o)
 # Current incremental app objects.
 # Add objects here as main.cpp starts using their functionality again.
-OBJSCRUDE = VideoFactory.o VideoSource.o Logger.o main.o
+OBJSCRUDE = VideoFactory.o VideoSource.o Logger.o World.o main.o
 OBJSLIB = Gesco/obj/Recognizer.o Gesco/obj/HandDetector.o\
 		  Gesco/obj/GestureRecognizer.o
 

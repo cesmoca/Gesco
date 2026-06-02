@@ -6,14 +6,12 @@
  *
  *      Test application
  */
-#define SDL_MAIN_HANDLED
-
 //#include "InputEventController.h"
 #include "VideoFactory.h"
 //#include "VideoSource.h"
 //#include "EndController.h"
-//#include "World.h"
-//#include "Logger.h"
+#include "World.h"
+#include "Logger.h"
 
 #include <Recognizer.h>
 #include <exception>
@@ -38,9 +36,9 @@ int main(int argc, char* argv[]) {
 				VideoFactory::getInstance()->getMainCamera().getHeight(), scale,
 				false);
 
-		//World::getInstance()->initWorld(
-		//		VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
-		//		VideoFactory::getInstance()->getMainCamera().getHeight()*scale);
+		World::getInstance()->initWorld(
+				VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
+				VideoFactory::getInstance()->getMainCamera().getHeight()*scale);
 
 		//// Main loop
 		//while (EndController::getInstance()->isRunning()) {
