@@ -8,7 +8,6 @@
  */
 #include "InputEventController.h"
 #include "VideoFactory.h"
-//#include "VideoSource.h"
 #include "EndController.h"
 #include "World.h"
 #include "Logger.h"
@@ -48,17 +47,17 @@ int main(int argc, char* argv[]) {
 		// Poll the events
 		InputEventController::getInstance()->pollEvents();
 
-		//	// Detection Logic
-		//	cv::Mat* frame =
-		//			VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
-		//	recognizer->detect(*frame);
+		// Detection Logic
+		//cv::Mat* frame =
+		//		VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
+		//recognizer->detect(*frame);
 
-		//	// Print the results, if any
-		//	//std::string& result = GestureRecognizer::getInstance()->getRecognizedGesture();
-		//	//if(result != "") std::cout<<result<<endl;
+		// Print the results, if any
+		//std::string& result = GestureRecognizer::getInstance()->getRecognizedGesture();
+		//if(result != "") std::cout<<result<<endl;
 
-		//	// Draw
-		//	World::getInstance()->drawWorld();
+		// Draw
+		World::getInstance()->drawWorld();
 		}
 
 		//Freeing resources
@@ -68,15 +67,12 @@ int main(int argc, char* argv[]) {
 		return 0;
 	} catch (const std::exception& e) {
 		std::cerr << "Fatal error: " << e.what() << std::endl;
-		std::cout << "Fatal error 1" << std::endl;
 		return 1;
 	} catch (const std::string& e) {
 		std::cerr << "Fatal error: " << e << std::endl;
-		std::cout << "Fatal error 2" << std::endl;
 		return 1;
 	} catch (const char* e) {
 		std::cerr << "Fatal error: " << e << std::endl;
-		std::cout << "Fatal error 3" << std::endl;
 		return 1;
 	}
 
