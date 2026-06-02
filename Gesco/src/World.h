@@ -23,6 +23,8 @@ class World: public Singleton<World> {
 	int _height;
 	Uint64 _ticksLastEvent;
 	SDL_Window* _window;
+	SDL_Renderer* _renderer;
+	SDL_Texture* _frameTexture;
 
 
 public:
