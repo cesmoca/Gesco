@@ -15,7 +15,7 @@
 //#include "World.h"
 //#include "Logger.h"
 
-//#include <Recognizer.h>
+#include <Recognizer.h>
 #include <exception>
 #include <iostream>
 #include <string>
@@ -24,17 +24,19 @@ using namespace std;
 
 int main(int argc, char* argv[]) {
 
+	std::cout << "Full init"<< std::endl;
+
 	try {
 		std::cout << "Starting Gesco..." << std::endl;
 
 		VideoFactory::getInstance()->addVideoSource("cam", 0);
 
-		//float scale = 0.5;
+		float scale = 0.5;
 
-		//Recognizer* recognizer = new Recognizer(
-		//		VideoFactory::getInstance()->getMainCamera().getWidth(),
-		//		VideoFactory::getInstance()->getMainCamera().getHeight(), scale,
-		//		true);
+		Recognizer* recognizer = new Recognizer(
+				VideoFactory::getInstance()->getMainCamera().getWidth(),
+				VideoFactory::getInstance()->getMainCamera().getHeight(), scale,
+				false);
 
 		//World::getInstance()->initWorld(
 		//		VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
@@ -68,12 +70,15 @@ int main(int argc, char* argv[]) {
 		//return 0;
 	} catch (const std::exception& e) {
 		std::cerr << "Fatal error: " << e.what() << std::endl;
+		std::cout << "Fatal error 1" << std::endl;
 		return 1;
 	} catch (const std::string& e) {
 		std::cerr << "Fatal error: " << e << std::endl;
+		std::cout << "Fatal error 2" << std::endl;
 		return 1;
 	} catch (const char* e) {
 		std::cerr << "Fatal error: " << e << std::endl;
+		std::cout << "Fatal error 3" << std::endl;
 		return 1;
 	}
 

@@ -29,7 +29,7 @@ LDFLAGS = $(CONSOLE_LDFLAGS) $(OPENCV_LIBS)
 # Includes
 # Temporarily disabled while main.cpp is reduced to standard-library code.
 # INCFLAGS = $(SDL_CFLAGS) $(OPENCV_CFLAGS) -IGesco/include
-INCFLAGS = $(OPENCV_CFLAGS)
+INCFLAGS = $(OPENCV_CFLAGS) -IGesco/include
 
 # Objects
 # Full application objects, temporarily disabled while isolating startup.
@@ -39,7 +39,7 @@ INCFLAGS = $(OPENCV_CFLAGS)
 # Current incremental app objects.
 # Add objects here as main.cpp starts using their functionality again.
 OBJSCRUDE = VideoFactory.o VideoSource.o Logger.o main.o
-OBJSLIB =
+OBJSLIB = Gesco/obj/Recognizer.o
 
 OBJS= $(addprefix $(OBJSDIR),$(OBJSCRUDE))
 
@@ -49,8 +49,12 @@ all: credentials dirs $(OUTPUTDIR)/test
 lib:
 	cd Gesco; $(MAKE) lib
 
-$(OUTPUTDIR)/test: $(OBJS)
+$(OUTPUTDIR)/test: $(OBJS) $(OBJSLIB)
 	$(CXX) $(OBJS) $(OBJSLIB) -Wall $(INCFLAGS) -o $(OUTPUTDIR)/test $(LDFLAGS)
+
+Gesco/obj/Recognizer.o:
+	mkdir -p Gesco/obj
+	cd Gesco; $(MAKE) obj/Recognizer.o
 
 
 $(OBJSDIR)main.o: $(SRCDIR)main.cpp Makefile

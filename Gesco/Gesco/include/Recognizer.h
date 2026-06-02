@@ -8,24 +8,24 @@
 #ifndef RECOGNIZER_H_
 #define RECOGNIZER_H_
 
-#include <Controllers/HandDetector.h>
-#include <Controllers/GestureRecognizer.h>
-#include <Controllers/DebugController.h>
+//#include <Controllers/HandDetector.h>
+//#include <Controllers/GestureRecognizer.h>
+//#include <Controllers/DebugController.h>
 #include <Kernel/Hand.h>
 
 class Recognizer{
 
 	Hand _hand;
 
-	cv::Mat _frame;
+	//cv::Mat _frame;
 
-	DebugController* _debugController;
-	HandDetector* _handDetector;
-	GestureRecognizer* _gestureRecognizer;
+	//DebugController* _debugController;
+	//HandDetector* _handDetector;
+	//GestureRecognizer* _gestureRecognizer;
 
-	int _frameWidth;
-	int _frameHeight;
-	float _scale;
+	//int _frameWidth;
+	//int _frameHeight;
+	//float _scale;
 
 public:
 	Recognizer(int width, int height, float scale = 0.5f, bool debug = false);
