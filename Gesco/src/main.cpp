@@ -35,9 +35,11 @@ int main(int argc, char* argv[]) {
 				VideoFactory::getInstance()->getMainCamera().getHeight(), scale,
 				false);
 
-		World::getInstance()->initWorld(
+		if (!World::getInstance()->initWorld(
 				VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
-				VideoFactory::getInstance()->getMainCamera().getHeight()*scale);
+				VideoFactory::getInstance()->getMainCamera().getHeight()*scale)) {
+			return 1;
+		}
 
 		// Main loop
 		while (EndController::getInstance()->isRunning()) {

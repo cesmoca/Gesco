@@ -9,8 +9,7 @@
 #define WORLD_H_
 
 #include <opencv2/opencv.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <SDL.h>
+#include <SDL3/SDL.h>
 
 #include "VideoFactory.h"
 #include "Logger.h"
@@ -22,13 +21,14 @@
 class World: public Singleton<World> {
 	int _width;
 	int _height;
-	Uint32 _ticksLastEvent;
+	Uint64 _ticksLastEvent;
+	SDL_Window* _window;
 
 
 public:
 	World();
 	virtual ~World();
-	void initWorld(int width, int height);
+	bool initWorld(int width, int height);
 	void drawWorld();
 
 	int getWidth();

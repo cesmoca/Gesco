@@ -9,7 +9,7 @@
 #define INPUTEVENTCONTROLLER_H_
 
 #include <vector>
-#include <SDL.h>
+#include <SDL3/SDL.h>
 #include "Singleton.h"
 #include "Logger.h"
 #include "EndController.h"

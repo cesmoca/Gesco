@@ -7,9 +7,9 @@ OBJSDIR = ./obj/
 SRCDIR = ./src/
 CXX = g++
 CXXFLAGS = -Wall -c -O2
-SDL_LIBS = -lSDL
+SDL_LIBS = $(shell pkg-config --libs sdl3)
 OPENCV_LIBS = $(shell pkg-config --libs opencv4)
-SDL_CFLAGS = -I/ucrt64/include/SDL -D_SDL_main_h
+SDL_CFLAGS = $(shell pkg-config --cflags sdl3)
 OPENCV_CFLAGS = $(shell pkg-config --cflags opencv4)
 CONSOLE_LDFLAGS = -mconsole
 
