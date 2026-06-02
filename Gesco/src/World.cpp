@@ -34,10 +34,10 @@ void World::initWorld(int width, int height) {
 }
 
 void World::drawWorld() {
-	////Draw the camera frame
-	//Mat originalFrame;
-	//cv::Mat* frame = VideoFactory::getInstance()->getMainCamera().getLastFrame();
-	//resize(*frame, originalFrame,Size(_width,_height));
+	//Draw the camera frame
+	Mat originalFrame;
+	cv::Mat* frame = VideoFactory::getInstance()->getMainCamera().getLastFrame();
+	resize(*frame, originalFrame,Size(_width,_height));
 
 	//imshow("OriginalFrame", originalFrame);
 

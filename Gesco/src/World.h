@@ -12,7 +12,7 @@
 #include <opencv2/highgui/highgui.hpp>
 //#include <SDL.h>
 
-//#include "VideoFactory.h"
+#include "VideoFactory.h"
 #include "Logger.h"
 #include "Singleton.h"
 
