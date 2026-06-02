@@ -9,7 +9,7 @@
 //#include "InputEventController.h"
 #include "VideoFactory.h"
 //#include "VideoSource.h"
-//#include "EndController.h"
+#include "EndController.h"
 #include "World.h"
 #include "Logger.h"
 
@@ -40,8 +40,8 @@ int main(int argc, char* argv[]) {
 				VideoFactory::getInstance()->getMainCamera().getWidth()*scale,
 				VideoFactory::getInstance()->getMainCamera().getHeight()*scale);
 
-		//// Main loop
-		//while (EndController::getInstance()->isRunning()) {
+		// Main loop
+		while (EndController::getInstance()->isRunning()) {
 		//	// Grab a frame from the camera!
 		//	VideoFactory::getInstance()->getMainCamera().grabFrame();
 
@@ -59,13 +59,13 @@ int main(int argc, char* argv[]) {
 
 		//	// Draw
 		//	World::getInstance()->drawWorld();
-		//}
+		}
 
-		////Freeing resources
-		//World::getInstance()->destroy();
-		//VideoFactory::getInstance()->destroy();
+		//Freeing resources
+		World::getInstance()->destroy();
+		VideoFactory::getInstance()->destroy();
 
-		//return 0;
+		return 0;
 	} catch (const std::exception& e) {
 		std::cerr << "Fatal error: " << e.what() << std::endl;
 		std::cout << "Fatal error 1" << std::endl;

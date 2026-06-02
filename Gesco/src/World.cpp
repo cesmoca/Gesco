@@ -20,9 +20,9 @@ void World::initWorld(int width, int height) {
 	_height = height;
 
 	SDL_Init(SDL_INIT_EVERYTHING);
-	////SDL_SetVideoMode(width, height,24,0);
+	//SDL_SetVideoMode(width, height,24,0);
 
-	//// Original frame
+	// Original frame
 	//namedWindow("OriginalFrame", WINDOW_AUTOSIZE );
 	//cv::moveWindow("OriginalFrame", 0, 0);
 
@@ -43,7 +43,7 @@ void World::drawWorld() {
 
 
 
-	//// Wait time
+	// Wait time
 	//Uint32 ticksNow = SDL_GetTicks();
 	//Uint32 ticksDiff = ticksNow - _ticksLastEvent;
 

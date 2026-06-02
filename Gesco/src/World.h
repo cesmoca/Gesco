@@ -22,7 +22,7 @@
 class World: public Singleton<World> {
 	int _width;
 	int _height;
-	uint64 _ticksLastEvent;
+	Uint32 _ticksLastEvent;
 
 
 public:
