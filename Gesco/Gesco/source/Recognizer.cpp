@@ -4,17 +4,17 @@ using namespace std;
 
 Recognizer::Recognizer(int width, int height, float scale, bool debug) {
 
-	//_scale = scale;
-	//if (scale > 1 || scale < 0) {
-	//	cout<<"Incorrect scale factor. Setting it up to 0.5"<<endl;
-	//	_scale = 0.5;
-	//}
+	_scale = scale;
+	if (scale > 1 || scale < 0) {
+		cout<<"Incorrect scale factor. Setting it up to 0.5"<<endl;
+		_scale = 0.5;
+	}
 
-	//_frameWidth = width;
-	//_frameHeight = height;
+	_frameWidth = width;
+	_frameHeight = height;
 
-	//// Hand stores the info :)
-	//_handDetector = new HandDetector(&_hand, _frameWidth*_scale, _frameHeight*_scale);
+	// Hand stores the info :)
+	_handDetector = new HandDetector(&_hand, _frameWidth*_scale, _frameHeight*_scale);
 	//_gestureRecognizer = new GestureRecognizer(&_hand);
 
 	//if (debug) {

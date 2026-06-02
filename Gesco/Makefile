@@ -39,7 +39,7 @@ INCFLAGS = $(OPENCV_CFLAGS) -IGesco/include
 # Current incremental app objects.
 # Add objects here as main.cpp starts using their functionality again.
 OBJSCRUDE = VideoFactory.o VideoSource.o Logger.o main.o
-OBJSLIB = Gesco/obj/Recognizer.o
+OBJSLIB = Gesco/obj/Recognizer.o Gesco/obj/HandDetector.o
 
 OBJS= $(addprefix $(OBJSDIR),$(OBJSCRUDE))
 
@@ -55,6 +55,10 @@ $(OUTPUTDIR)/test: $(OBJS) $(OBJSLIB)
 Gesco/obj/Recognizer.o:
 	mkdir -p Gesco/obj
 	cd Gesco; $(MAKE) obj/Recognizer.o
+
+Gesco/obj/HandDetector.o:
+	mkdir -p Gesco/obj
+	cd Gesco; $(MAKE) obj/HandDetector.o
 
 
 $(OBJSDIR)main.o: $(SRCDIR)main.cpp Makefile
