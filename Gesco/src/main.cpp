@@ -48,8 +48,7 @@ int main(int argc, char* argv[]) {
 		InputEventController::getInstance()->pollEvents();
 
 		// Detection Logic
-		//cv::Mat* frame =
-		//		VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
+		//cv::Mat* frame = VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
 		//recognizer->detect(*frame);
 
 		// Print the results, if any
@@ -61,6 +60,8 @@ int main(int argc, char* argv[]) {
 		}
 
 		//Freeing resources
+		std::cout << "Freeing resources..." << std::endl;
+
 		World::getInstance()->destroy();
 		VideoFactory::getInstance()->destroy();
 

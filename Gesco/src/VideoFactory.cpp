@@ -51,6 +51,9 @@ void VideoFactory::addVideoSource(const std::string& name, const int& nDevice){
 }
 
 VideoFactory::~VideoFactory() {
+	std::cout << "Destroying VideoFactory..." << std::endl;
+
 	for(unsigned int i=0;i<_videoSources.size();i++)
 		delete _videoSources.at(i);
+
 }

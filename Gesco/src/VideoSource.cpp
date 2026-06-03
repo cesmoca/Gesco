@@ -87,10 +87,8 @@ int VideoSource::getFps() {
 }
 
 VideoSource::~VideoSource() {
-#ifndef WIN32
+	std::cout << "Destroying VideoSource '" << _name << "'..." << std::endl;
 	delete _cam;
-#endif
-
 	if (_lastFrame != NULL)
 		delete _lastFrame;
 }
