@@ -40,6 +40,10 @@ DebugController* Recognizer::getDebugController() {
 	return _debugController;
 }
 
+std::string& Recognizer::getRecognizedGesture() {
+	return _gestureRecognizer->getRecognizedGesture();
+}
+
 Recognizer::~Recognizer() {
 
 }

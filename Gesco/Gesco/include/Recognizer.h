@@ -33,6 +33,7 @@ public:
 
 	void detect(cv::Mat& frame);
 	DebugController* getDebugController();
+	std::string& getRecognizedGesture();
 
 	// Public interface :)
 	int getGesture();

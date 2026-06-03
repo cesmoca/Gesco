@@ -42,6 +42,7 @@ int main(int argc, char* argv[]) {
 		}
 
 		// Main loop
+		std::string lastGesture;
 		while (EndController::getInstance()->isRunning()) {
 		// Grab a frame from the camera!
 		VideoFactory::getInstance()->getMainCamera().grabFrame();
@@ -54,8 +55,11 @@ int main(int argc, char* argv[]) {
 		recognizer->detect(*frame);
 
 		// Print the results, if any
-		//std::string& result = GestureRecognizer::getInstance()->getRecognizedGesture();
-		//if(result != "") std::cout<<result<<endl;
+		std::string& result = recognizer->getRecognizedGesture();
+		if(result != "" && result != lastGesture) {
+			std::cout<<"Recognized gesture: "<<result<<endl;
+			lastGesture = result;
+		}
 
 		// Draw
 		World::getInstance()->drawWorld();

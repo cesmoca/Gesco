@@ -16,9 +16,11 @@ GestureRecognizer::GestureRecognizer(Hand* hand): _hand(hand) {
 
 void GestureRecognizer::detect() {
 	vector<cv::Mat>& handsMasks = _hand->handsMasks();
+	_gesture = "";
 
 	// Select the minimum
 	double minDifference = 99;
+	int recognizedGestureId = -1;
 	vector<Point> recognizedContour;
 	vector<vector<Point> > contours;
 	vector<Point> contour;
@@ -42,6 +44,7 @@ void GestureRecognizer::detect() {
 
 			if (difference < minDifference) {
 				minDifference = difference;
+				recognizedGestureId = gestId;
 				recognizedContour = contour;
 				recognizedGesture = _gesturesLib.at(gestId);
 			}
@@ -50,6 +53,10 @@ void GestureRecognizer::detect() {
 	}
 
 	if (minDifference < MAX_DIFFERENCE) {
+		stringstream ss;
+		ss << "gesture" << (recognizedGestureId + 1);
+		_gesture = ss.str();
+
 		//vector<vector<Point> > gesturesVector;
 		//gesturesVector.push_back(recognizedGesture);
 		//Mat gestureRecognizedImg = Mat::zeros(
@@ -58,7 +65,7 @@ void GestureRecognizer::detect() {
 		//		2);
 
 		// Store the gesture!!
-		cout<<"Gesture Found! Store it in the interface :)"<<endl;
+		cout<<"Gesture Found: "<<_gesture<<" difference="<<minDifference<<endl;
 
 		//Rep
 		//vector<vector<Point> > contoursVector;
