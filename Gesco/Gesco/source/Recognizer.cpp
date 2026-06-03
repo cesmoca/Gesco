@@ -5,9 +5,9 @@ using namespace std;
 Recognizer::Recognizer(int width, int height, float scale, bool debug) {
 
 	_scale = scale;
-	if (scale > 1 || scale < 0) {
-		cout<<"Incorrect scale factor. Setting it up to 0.5"<<endl;
-		_scale = 0.5;
+	if (scale > 1 || scale <= 0) {
+		cout<<"Incorrect scale factor. Setting it up to 1.0"<<endl;
+		_scale = 1.0;
 	}
 
 	_frameWidth = width;

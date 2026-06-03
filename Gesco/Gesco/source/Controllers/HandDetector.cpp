@@ -51,6 +51,11 @@ void HandDetector::detect(cv::Mat& frame) {
 
 		// Find seed! Movement + skin mask :)
 		findMovingSeedPoint();
+		if (_hand->seedPoint().x < 0 || _hand->seedPoint().y < 0
+				|| _hand->seedPoint().x >= skinMasks.at(i).cols
+				|| _hand->seedPoint().y >= skinMasks.at(i).rows) {
+			return;
+		}
 		if (!skinMasks.at(i).at<uchar>(_hand->seedPoint().y,
 				_hand->seedPoint().x)
 				&& !interpolateSeedPoint(skinMasks.at(i), _frame)) {
@@ -103,17 +108,11 @@ void HandDetector::getBackgroundMask(cv::Mat& frame, cv::Mat& backgroundMask) {
 
 	for (int i = 0; i < _height; i++) {
 		for (int j = 0; j < _width; j++) {
-			float diff = pow(
-					(float) frame.at<uchar>(i, j * 3)
-							- backgroundImage.at<uchar>(i, j * 3), 2)
-					+ pow(
-							(float) frame.at<uchar>(i, j * 3 + 1)
-									- backgroundImage.at<uchar>(i, j * 3 + 1),
-							2)
-					+ pow(
-							(float) frame.at<uchar>(i, j * 3 + 2)
-									- backgroundImage.at<uchar>(i, j * 3 + 2),
-							2);
+			Vec3b framePixel = frame.at<Vec3b>(i, j);
+			Vec3b backgroundPixel = backgroundImage.at<Vec3b>(i, j);
+			float diff = pow((float) framePixel[0] - backgroundPixel[0], 2)
+					+ pow((float) framePixel[1] - backgroundPixel[1], 2)
+					+ pow((float) framePixel[2] - backgroundPixel[2], 2);
 
 			backgroundMask.at<uchar>(i, j) =
 					(diff > THRES_ACCUMULATOR) ? 255 : 0;
@@ -159,7 +158,7 @@ bool HandDetector::interpolateSeedPoint(cv::Mat& skinMask,
 				j < _hand->seedPoint().y + SEED_POINT_KERNEL;
 				j = j + SEED_POINT_LOCAL_KERNEL) {
 
-			if (frameWithMask.at<Point3i>(i, j).x == 0)
+			if (frameWithMask.at<Vec3b>(j, i)[0] == 0)
 				continue;
 
 			if (i > SEED_POINT_LOCAL_KERNEL && j > SEED_POINT_LOCAL_KERNEL

@@ -28,7 +28,7 @@ class Recognizer{
 	float _scale;
 
 public:
-	Recognizer(int width, int height, float scale = 0.5f, bool debug = false);
+	Recognizer(int width, int height, float scale = 1.0f, bool debug = false);
 	~Recognizer();
 
 	void detect(cv::Mat& frame);

@@ -31,6 +31,7 @@ int main(int argc, char* argv[]) {
 		Recognizer* recognizer = new Recognizer(
 				VideoFactory::getInstance()->getMainCamera().getWidth(),
 				VideoFactory::getInstance()->getMainCamera().getHeight(),
+				1.0f,
 				false);
 
 		if (!World::getInstance()->initWorld(
@@ -48,8 +49,8 @@ int main(int argc, char* argv[]) {
 		InputEventController::getInstance()->pollEvents();
 
 		// Detection Logic
-		//cv::Mat* frame = VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
-		//recognizer->detect(*frame);
+		cv::Mat* frame = VideoFactory::getInstance()->getInstance()->getMainCamera().getLastFrame();
+		recognizer->detect(*frame);
 
 		// Print the results, if any
 		//std::string& result = GestureRecognizer::getInstance()->getRecognizedGesture();
