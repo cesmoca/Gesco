@@ -11,6 +11,7 @@
 #include <Kernel/Hand.h>
 #include <opencv2/opencv.hpp>
 #include <sstream>
+#include <vector>
 
 #define TEST_WINDOWS 6
 
@@ -38,6 +39,8 @@ public:
 	void setTestFrame(unsigned int n, cv::Mat& mat);
 	void setGestureRecognized(cv::Mat& gestureImg);
 
+	const std::vector<cv::Mat>& getTestFrames() const;
+	const cv::Mat& getGestureRecognizedImg() const;
 
 };
 

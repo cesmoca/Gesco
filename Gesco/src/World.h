@@ -10,7 +10,9 @@
 
 #include <opencv2/opencv.hpp>
 #include <SDL3/SDL.h>
+#include <vector>
 
+#include <Controllers/DebugController.h>
 #include "VideoFactory.h"
 #include "Logger.h"
 #include "Singleton.h"
@@ -27,6 +29,13 @@ class World: public Singleton<World> {
 	SDL_Texture* _frameTexture;
 	cv::Mat _originalFrame;
 	cv::Mat _rgbFrame;
+	DebugController* _debugController;
+	std::vector<SDL_Texture*> _debugTextures;
+	std::vector<cv::Mat> _debugRgbFrames;
+
+	void renderMatToTexture(const cv::Mat& frame, SDL_Texture** texture,
+			cv::Mat& rgbFrame, const SDL_FRect& destination);
+	void renderDebugFrames();
 
 
 public:
@@ -34,6 +43,7 @@ public:
 	virtual ~World();
 	bool initWorld(int width, int height);
 	void drawWorld();
+	void setDebugController(DebugController* debugController);
 
 	int getWidth();
 	int getHeight();

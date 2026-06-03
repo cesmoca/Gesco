@@ -11,7 +11,7 @@ using namespace cv;
 using namespace std;
 
 HandDetector::HandDetector(Hand* hand, int width, int height) :
-		_hand(hand) {
+		_hand(hand), _debugController(NULL) {
 
 	_width = width;
 	_height = height;
@@ -30,16 +30,26 @@ void HandDetector::detect(cv::Mat& frame) {
 	// Get difference mask
 	Mat differenceMask;
 	threshold(_movFrame, differenceMask, THRES_DIFF_MASK, 255, THRESH_BINARY);
+	if (_debugController != NULL) {
+		_debugController->setTestFrame(0, _frame);
+		_debugController->setTestFrame(1, differenceMask);
+	}
 
 	// Get skin mask
 	vector<Mat> skinMasks(_skinHistograms.size());
 	getSkinMask(skinMasks);
+	if (_debugController != NULL && skinMasks.size() > 0) {
+		_debugController->setTestFrame(2, skinMasks.at(0));
+	}
 
 	// IMPROVE THIS PART! THERE ARE DIFFERENT SKIN HISTOGRAMS! WTF!!!
 	// Get background mask
 	Mat backgroundMask;
 	//getBackgroundMask(_frameBlur, backgroundMask, diffSkinMask);
 	getBackgroundMask(_frameBlur, backgroundMask);
+	if (_debugController != NULL) {
+		_debugController->setTestFrame(3, backgroundMask);
+	}
 
 	// For each histogram
 	for (unsigned int i = 0; i < _skinHistograms.size(); i++) {
@@ -48,6 +58,9 @@ void HandDetector::detect(cv::Mat& frame) {
 
 		Mat erodedBackgroundMask;
 		erode((backgroundMask & diffSkinMask), erodedBackgroundMask, Mat());
+		if (_debugController != NULL) {
+			_debugController->setTestFrame(4, erodedBackgroundMask);
+		}
 
 		// Find seed! Movement + skin mask :)
 		findMovingSeedPoint();
@@ -64,6 +77,9 @@ void HandDetector::detect(cv::Mat& frame) {
 
 		Mat floodedFrame;
 		getFloodedMask(erodedBackgroundMask, floodedFrame);
+		if (_debugController != NULL) {
+			_debugController->setTestFrame(5, floodedFrame);
+		}
 
 		_hand->handsMasks().push_back(floodedFrame);
 

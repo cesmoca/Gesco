@@ -4,5 +4,5 @@
 [WARNING]OpenCV VideoCapture does not expose a portable list of supported camera modes.
 >First captured frame: 640x480, channels: 3
 >Initializing world...
->SDL window size: 640x480 logical units; 640x480 physical pixels.
+>SDL window size: 1280x480 logical units; 1280x480 physical pixels.
 >World succesfully loaded!

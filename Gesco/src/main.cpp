@@ -32,7 +32,8 @@ int main(int argc, char* argv[]) {
 				VideoFactory::getInstance()->getMainCamera().getWidth(),
 				VideoFactory::getInstance()->getMainCamera().getHeight(),
 				1.0f,
-				false);
+				true);
+		World::getInstance()->setDebugController(recognizer->getDebugController());
 
 		if (!World::getInstance()->initWorld(
 				VideoFactory::getInstance()->getMainCamera().getWidth(),

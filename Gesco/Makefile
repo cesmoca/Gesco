@@ -41,7 +41,7 @@ INCFLAGS = $(SDL_CFLAGS) $(OPENCV_CFLAGS) -IGesco/include
 OBJSCRUDE = EndController.o InputEventController.o VideoFactory.o VideoSource.o\
 			Logger.o World.o main.o
 OBJSLIB = Gesco/obj/Recognizer.o Gesco/obj/HandDetector.o\
-		  Gesco/obj/GestureRecognizer.o
+		  Gesco/obj/GestureRecognizer.o Gesco/obj/DebugController.o
 
 OBJS= $(addprefix $(OBJSDIR),$(OBJSCRUDE))
 
@@ -65,6 +65,10 @@ Gesco/obj/HandDetector.o:
 Gesco/obj/GestureRecognizer.o:
 	mkdir -p Gesco/obj
 	cd Gesco; $(MAKE) obj/GestureRecognizer.o
+
+Gesco/obj/DebugController.o:
+	mkdir -p Gesco/obj
+	cd Gesco; $(MAKE) obj/DebugController.o
 
 
 $(OBJSDIR)main.o: $(SRCDIR)main.cpp Makefile

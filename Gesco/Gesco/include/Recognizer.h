@@ -10,7 +10,7 @@
 
 #include <Controllers/HandDetector.h>
 #include <Controllers/GestureRecognizer.h>
-//#include <Controllers/DebugController.h>
+#include <Controllers/DebugController.h>
 #include <Kernel/Hand.h>
 
 class Recognizer{
@@ -19,7 +19,7 @@ class Recognizer{
 
 	//cv::Mat _frame;
 
-	//DebugController* _debugController;
+	DebugController* _debugController;
 	HandDetector* _handDetector;
 	GestureRecognizer* _gestureRecognizer;
 
@@ -32,6 +32,7 @@ public:
 	~Recognizer();
 
 	void detect(cv::Mat& frame);
+	DebugController* getDebugController();
 
 	// Public interface :)
 	int getGesture();

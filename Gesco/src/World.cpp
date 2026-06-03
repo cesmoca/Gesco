@@ -13,7 +13,7 @@ using namespace cv;
 using namespace std;
 
 World::World(): _width(320), _height(240), _ticksLastEvent(0), _window(NULL),
-		_renderer(NULL), _frameTexture(NULL) {
+		_renderer(NULL), _frameTexture(NULL), _debugController(NULL) {
 }
 
 bool World::initWorld(int width, int height) {
@@ -27,22 +27,25 @@ bool World::initWorld(int width, int height) {
 		return false;
 	}
 
-	_window = SDL_CreateWindow("Gesco", _width, _height, 0);
+	int windowWidth = (_debugController != NULL) ? _width * 2 : _width;
+	int windowHeight = _height;
+
+	_window = SDL_CreateWindow("Gesco", windowWidth, windowHeight, 0);
 	if (_window == NULL) {
 		Logger::getInstance()->error(std::string("SDL window creation failed: ") + SDL_GetError());
 		SDL_Quit();
 		return false;
 	}
 
-	int windowWidth = 0;
-	int windowHeight = 0;
+	int actualWindowWidth = 0;
+	int actualWindowHeight = 0;
 	int pixelWidth = 0;
 	int pixelHeight = 0;
-	SDL_GetWindowSize(_window, &windowWidth, &windowHeight);
+	SDL_GetWindowSize(_window, &actualWindowWidth, &actualWindowHeight);
 	SDL_GetWindowSizeInPixels(_window, &pixelWidth, &pixelHeight);
 
 	std::stringstream windowInfo;
-	windowInfo << "SDL window size: " << windowWidth << "x" << windowHeight
+	windowInfo << "SDL window size: " << actualWindowWidth << "x" << actualWindowHeight
 			<< " logical units; " << pixelWidth << "x" << pixelHeight
 			<< " physical pixels.";
 	Logger::getInstance()->out(windowInfo.str());
@@ -70,6 +73,11 @@ bool World::initWorld(int width, int height) {
 
 	_originalFrame.create(_height, _width, CV_8UC3);
 	_rgbFrame.create(_height, _width, CV_8UC3);
+	if (_debugController != NULL) {
+		size_t debugCount = _debugController->getTestFrames().size() + 1;
+		_debugTextures.assign(debugCount, NULL);
+		_debugRgbFrames.resize(debugCount);
+	}
 
 	_ticksLastEvent = SDL_GetTicks();
 
@@ -83,18 +91,10 @@ void World::drawWorld() {
 
 	if (frame != NULL && !frame->empty()) {
 		resize(*frame, _originalFrame, Size(_width, _height));
-
-		if (_originalFrame.channels() == 3) {
-			cvtColor(_originalFrame, _rgbFrame, COLOR_BGR2RGB);
-		} else if (_originalFrame.channels() == 4) {
-			cvtColor(_originalFrame, _rgbFrame, COLOR_BGRA2RGB);
-		} else {
-			cvtColor(_originalFrame, _rgbFrame, COLOR_GRAY2RGB);
-		}
-
-		SDL_UpdateTexture(_frameTexture, NULL, _rgbFrame.data, (int) _rgbFrame.step);
 		SDL_RenderClear(_renderer);
-		SDL_RenderTexture(_renderer, _frameTexture, NULL, NULL);
+		SDL_FRect cameraDestination = {0, 0, (float) _width, (float) _height};
+		renderMatToTexture(_originalFrame, &_frameTexture, _rgbFrame, cameraDestination);
+		renderDebugFrames();
 		SDL_RenderPresent(_renderer);
 	}
 
@@ -110,6 +110,68 @@ void World::drawWorld() {
 	_ticksLastEvent = SDL_GetTicks();
 }
 
+void World::renderMatToTexture(const cv::Mat& frame, SDL_Texture** texture,
+		cv::Mat& rgbFrame, const SDL_FRect& destination) {
+	if (frame.empty()) {
+		return;
+	}
+
+	if (frame.channels() == 3) {
+		cvtColor(frame, rgbFrame, COLOR_BGR2RGB);
+	} else if (frame.channels() == 4) {
+		cvtColor(frame, rgbFrame, COLOR_BGRA2RGB);
+	} else {
+		cvtColor(frame, rgbFrame, COLOR_GRAY2RGB);
+	}
+
+	if (*texture == NULL) {
+		*texture = SDL_CreateTexture(_renderer, SDL_PIXELFORMAT_RGB24,
+				SDL_TEXTUREACCESS_STREAMING, rgbFrame.cols, rgbFrame.rows);
+	}
+
+	SDL_UpdateTexture(*texture, NULL, rgbFrame.data, (int) rgbFrame.step);
+	SDL_RenderTexture(_renderer, *texture, NULL, &destination);
+}
+
+void World::renderDebugFrames() {
+	if (_debugController == NULL) {
+		return;
+	}
+
+	const vector<Mat>& testFrames = _debugController->getTestFrames();
+	const float panelX = (float) _width;
+	const float tileWidth = (float) _width / 2.0f;
+	const float tileHeight = (float) _height / 4.0f;
+
+	for (unsigned int i = 0; i < testFrames.size(); i++) {
+		if (testFrames.at(i).empty()) {
+			continue;
+		}
+
+		SDL_FRect destination = {
+				panelX + (float) (i % 2) * tileWidth,
+				(float) (i / 2) * tileHeight,
+				tileWidth,
+				tileHeight
+		};
+		renderMatToTexture(testFrames.at(i), &_debugTextures.at(i),
+				_debugRgbFrames.at(i), destination);
+	}
+
+	const Mat& gestureFrame = _debugController->getGestureRecognizedImg();
+	unsigned int gestureIndex = (unsigned int) testFrames.size();
+	if (!gestureFrame.empty() && gestureIndex < _debugTextures.size()) {
+		SDL_FRect destination = {
+				panelX,
+				(float) _height - tileHeight,
+				tileWidth,
+				tileHeight
+		};
+		renderMatToTexture(gestureFrame, &_debugTextures.at(gestureIndex),
+				_debugRgbFrames.at(gestureIndex), destination);
+	}
+}
+
 
 
 
@@ -121,8 +183,17 @@ int World::getHeight() {
 	return _height;
 }
 
+void World::setDebugController(DebugController* debugController) {
+	_debugController = debugController;
+}
 
 World::~World() {
+	for (unsigned int i = 0; i < _debugTextures.size(); i++) {
+		if (_debugTextures.at(i) != NULL) {
+			SDL_DestroyTexture(_debugTextures.at(i));
+			_debugTextures.at(i) = NULL;
+		}
+	}
 	if (_frameTexture != NULL) {
 		SDL_DestroyTexture(_frameTexture);
 		_frameTexture = NULL;

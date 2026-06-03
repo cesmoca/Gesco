@@ -2,7 +2,8 @@
 
 using namespace std;
 
-Recognizer::Recognizer(int width, int height, float scale, bool debug) {
+Recognizer::Recognizer(int width, int height, float scale, bool debug) :
+		_debugController(NULL), _handDetector(NULL), _gestureRecognizer(NULL) {
 
 	_scale = scale;
 	if (scale > 1 || scale <= 0) {
@@ -17,11 +18,11 @@ Recognizer::Recognizer(int width, int height, float scale, bool debug) {
 	_handDetector = new HandDetector(&_hand, _frameWidth*_scale, _frameHeight*_scale);
 	_gestureRecognizer = new GestureRecognizer(&_hand);
 
-	//if (debug) {
-	//	_debugController = new DebugController(&_hand, _frameWidth*_scale, _frameHeight*_scale);
-	//	_handDetector->setDebugController(_debugController);
-	//	_gestureRecognizer->setDebugController(_debugController);
-	//}
+	if (debug) {
+		_debugController = new DebugController(&_hand, _frameWidth*_scale, _frameHeight*_scale);
+		_handDetector->setDebugController(_debugController);
+		_gestureRecognizer->setDebugController(_debugController);
+	}
 
 }
 
@@ -30,7 +31,13 @@ void Recognizer::detect(cv::Mat& frame) {
 	_gestureRecognizer->detect();
 
 	// Trigger the debug controller :)
-	//_debugController->show();
+	if (_debugController != NULL) {
+		_debugController->show();
+	}
+}
+
+DebugController* Recognizer::getDebugController() {
+	return _debugController;
 }
 
 Recognizer::~Recognizer() {

@@ -16,39 +16,12 @@ DebugController::DebugController(Hand* hand, int width, int height) :
 	_noGestureRecognizedImg = Mat::zeros(Size(_width, _height), CV_8UC1);
 	_gestureRecognizedImg = _noGestureRecognizedImg;
 
-	// Gesture recognized
-	namedWindow("GestureRecognized", WINDOW_AUTOSIZE);
-	moveWindow("GestureRecognized", 0, _height + 60);
-
-	int x = _width + 15;
-	int y = 0;
-
-	for (int i = 0; i < TEST_WINDOWS; i++) {
-		stringstream ss;
-		ss << "Test" << i << "Window";
-		namedWindow(ss.str(), WINDOW_AUTOSIZE);
-		moveWindow(ss.str(), x, y);
-		x += _width + 15;
-		if (x > (1366 - _width)) {
-			x = _width + 15;
-			y += _height + 60;
-		}
-	}
-
 	for (int i = 0; i < TEST_WINDOWS; i++)
 		_testFramesVector.push_back(Mat());
 
 }
 
 void DebugController::show() {
-	for (unsigned int i = 0; i < _testFramesVector.size(); i++) {
-		stringstream ss;
-		ss << "Test" << i << "Window";
-		Mat& testFrame = _testFramesVector.at(i);
-		if (testFrame.rows > 0)
-			imshow(ss.str(), testFrame);
-	}
-
 	// Gesture recognized logic
 	if (_timerGestureRecognized > 0) {
 		_timerGestureRecognized--;
@@ -57,7 +30,6 @@ void DebugController::show() {
 		_gestureRecognizedImg = _noGestureRecognizedImg;
 	}
 
-	imshow("GestureRecognized", _gestureRecognizedImg);
 }
 
 void DebugController::setTestFrame(unsigned int n, cv::Mat& mat) {
@@ -73,5 +45,13 @@ void DebugController::setGestureRecognized(cv::Mat& gestureImg) {
 	;
 	_gestureRecognizedImg = gestureImg;
 
+}
+
+const std::vector<cv::Mat>& DebugController::getTestFrames() const {
+	return _testFramesVector;
+}
+
+const cv::Mat& DebugController::getGestureRecognizedImg() const {
+	return _gestureRecognizedImg;
 }
 
